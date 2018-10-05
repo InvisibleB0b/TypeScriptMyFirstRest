@@ -1,12 +1,26 @@
-interface Person {
-    firstName: string;
-    lastName: string;
+import axios, {
+    AxiosResponse,
+    AxiosError
+} from "../../node_modules/axios"; // Don't worry about red lines here ...
+
+interface IPost {
+    // attributes from http://jsonplaceholder.typicode.com/posts
+    id: number;
+    userId: number;
+    title: string;
+    body: string;
 }
 
-function greeter(person: Person): string {
-    return "Hello, " + person.firstName + " " + person.lastName;
-}
-let user: Person = { firstName: "John", lastName: "Doe" };
+let element: HTMLDivElement = <HTMLDivElement>document.getElementById("content");
 
-let element: HTMLDivElement = <HTMLDivElement> document.getElementById("content");
-element.innerHTML = greeter(user);
+axios.get<IPost>("http://jsonplaceholder.typicode.com/posts")
+    .then((response: AxiosResponse<IPost>) => {
+        let data: IPost[] = response.data;
+        element.innerHTML = JSON.stringify(data);
+        data.forEach(element => {
+            console.log(element.title);
+        });
+    })
+    .catch((error: AxiosError) => {
+        console.log(error);
+    });
