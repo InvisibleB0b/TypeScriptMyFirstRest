@@ -1,7 +1,7 @@
 import axios, {
     AxiosResponse,
     AxiosError
-} from "../../node_modules/axios/index"; // Don't worry about red lines here ...
+} from "../../node_modules/axios/index"; 
 
 interface IPost {
     // attributes from http://jsonplaceholder.typicode.com/posts
@@ -16,12 +16,19 @@ let element: HTMLDivElement = <HTMLDivElement>document.getElementById("content")
 axios.get<IPost[]>("http://jsonplaceholder.typicode.com/posts")
     .then((response: AxiosResponse<IPost[]>) => {
         let data: IPost[] = response.data;
-        element.innerHTML = JSON.stringify(data);
+        //element.innerHTML = JSON.stringify(data);
+        let longHtml: string = "<ol>";
         data.forEach(element => {
             console.log(element.title);
+            longHtml += "<li>" + element.title + "</li>";
         });
+        longHtml += "</ol>";
+        element.innerHTML = longHtml;
     })
     .catch((error: AxiosError) => {
         console.log(error);
         element.innerHTML = error.message;
     });
+
+let messageElement: HTMLDivElement = <HTMLDivElement>document.getElementById("message");
+messageElement.innerHTML = "Done";
